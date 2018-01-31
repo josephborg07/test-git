@@ -1,0 +1,39 @@
+Primary requirements:
+-Login
+-Access levels / permissions
+
+Setup:
+- Basic data input:
+-- Relation between couples
+-- general information
+-- More reference to email
+--Initial assesment:
+--- Categories (different conditions)
+--- Tagging by treatment (Input by professionals)
+--- Client's self-assesment to be a note. Professional to give own assesment.
+
+
+Additional info:
+- Possibility for client to change professional / transfer:
+-- Once transferred old professional will not have access to client.
+
+
+Questions:
+- Infrastructure - What hosting environment.
+- Accessible from home / Publicly accessible / Over-VPN?
+- Backups
+
+
+Phases:
+- Phase1: Primary setup
+-- MYSQL DB setup:
+--- 
+
+-- Interface:
+---- Login
+---- Permissions
+---- Basic data input
+
+- Phase 2: Design
+
+- Phase 3: reporting

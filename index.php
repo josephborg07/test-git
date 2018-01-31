@@ -34,7 +34,7 @@
 				<form method="post" action="">
 					<div class="form_fields">
 						<label>Username</label><input type="text" name="username" />
-						<label>Password</label><input type="text" name="password" />
+						<label>Password</label><input type="password" name="password" />
 					</div>
 					<input type="submit" value="submit">
 				</form>
