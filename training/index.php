@@ -1,24 +1,13 @@
 <?php
 
-class circle{
-    const pi=3.141;
+class BankAccount{
+    public $balance=3500;
 
-    public function area($radius){
-        return self::pi*($radius*$radius);
+    public function DisplayBalance(){
+        return $this->balance;
     }
 }
 
-
-/*class circle{
-    const pi = 3.141;
-    public function Area ($radius){
-        return self::pi*($radius*$radius);
-    }
-}
-
-$circle=new circle;
-echo $circle->Area(100);   */
-$circle=new circle;
-echo $circle->area(5);
+$joe=new BankAccount;
+echo $joe->balance;
 ?>
-

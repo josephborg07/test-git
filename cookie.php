@@ -11,7 +11,7 @@ setcookie("user",$username, time() + (84600 * 30), "/");
 	
 	<body>
 		<?php
-		if($_COOKIE[$cookie_name]==$cookie_Value){
+		if($_COOKIE[$cookie_Value]="True"){
 			header("Location: ./loggedin.php");
 		}
 		else{

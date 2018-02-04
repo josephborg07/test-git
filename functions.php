@@ -1,4 +1,33 @@
 <?php
+class DB_ops{
+	public $db_server="localhost";
+	public $db_user="root";
+	public $db_pass="";
+	public $db_name="test";
+
+	public function __construct(){
+		$conn=mysqli_connect($this->db_server,$this->db_user,$this->db_pass,$this->db_name);
+		$this->dbc=$conn;
+		if(mysqli_connect_errno()){
+			echo"mysql connection failed ".mysqli_connect_error();
+		}
+	}
+
+	public function checkLogin($username,$password){
+		$sql_login="SELECT username,password FROM credentials WHERE username='$username' AND password='$password'";
+		$result=mysqli_query($this->dbc,$sql_login);
+		return ($result);
+	}
+}
+
+class sexualOrientation extends DB_ops{
+
+	function test(){
+		return $this->dbc;
+	}
+
+}
+
 function get_sexual_orientation(){
 		include 'mysql_connection.php';
 		$query="SELECT * FROM sexual_orientation";
