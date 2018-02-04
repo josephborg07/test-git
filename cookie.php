@@ -5,6 +5,7 @@ function login_cookie(){
 $cookie_name="logged_in";
 $cookie_Value="True";
 setcookie($cookie_name, $cookie_Value, time() + (86400 * 30), "/");
+setcookie("user",$username, time() + (84600 * 30), "/");
 ?>
 <html>
 	
@@ -16,12 +17,6 @@ setcookie($cookie_name, $cookie_Value, time() + (86400 * 30), "/");
 		else{
 			echo "cookie is not set";
 		}
-			/*if(!isset($_COOKIE[$cookie_name])){
-				echo $cookie_name . " is not set";
-			}
-			else{
-				echo $cookie_name . " has been set to " . $cookie_Value; 
-			}*/
 		?>
 	</body>
 </html>

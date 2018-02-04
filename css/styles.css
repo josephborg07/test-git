@@ -5,8 +5,29 @@
 	display: block;
 }
 
+/*Menu area css*/
+.menu-area{
+	width: 60%;
+	border:1px solid black;
+	float:left;
+	padding:1%;
+}
+.menu-area div{
+	border: 1px solid black;
+    height: auto;
+    width: 30%;
+    display: inline-block;
+}
+.menu-area a{
+	width:auto;
+	position: relative;
+	margin-right:5%;
+	float:left;
+}
+
+/*Login area*/
 .login_area{
-	width:70%;
+	width:35%;
 	height:10%;
 	border:1px solid black;
 	float:right;
@@ -14,13 +35,13 @@
 .login_area form{
 	margin-right:auto;
 	margin-left:auto;
-	float:right;
+	float:left;
 	width:auto;
 }
 
 .form_fields{
 	width:90%;
-	float:right;
+	float:left;
 }
 
 .login_area input[type=text]{
