@@ -13,26 +13,29 @@
 	 			$password=$_POST["password"];
 
 	 			if(!empty($username)&&!empty($password)){ #check if credential fields are empty
+
 					$conn=new DB_ops; #Initiate a new object based on the class DB_ops from functions.php
                     $test=$conn->checkLogin($username,$password);
-                    if(mysqli_num_rows($test)>0){ 
+					if($test==TRUE){	
 						include 'cookie.php';
 					}
 					else{
-						echo "Username and password incorrect";
+						echo "Username of password incorred";
 					}
+                    
+					
 				}
-				else{
-					echo "Please enter username and password";
-				}
-	 		}
-		
-		
+		}
+		else{
+			echo "Please enter username and password";
+		}		
 		?>
+
 		<div class="main_container">
 			<div class="menu-area">
 				<div><a href="insert.php">Insert Patient</a></div>
 				<div><a href="patients.php">Patients list</a></div>	
+				<div><a href="InsertUSer.php">Insert User</a></div>
 			</div>
 			
 			<div class="login_area">

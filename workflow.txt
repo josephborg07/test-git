@@ -1,0 +1,22 @@
+Administrator - full access:
+- read
+- write
+- update
+- delete
+- New admissions
+
+consultants - own clients only:
+- read
+- write
+- update
+
+Assistants - Just access to fill in new admissions form:
+- New Admissions
+
+
+
+Workflow:
+
+	1. Login
+	2. Check permissions(check username -> check role of that username -> check permissions associated with that username). Store this information in $_Session / $_Cookie. This is to be includded in the logged in page.
+	3.

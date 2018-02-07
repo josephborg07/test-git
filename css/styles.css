@@ -36,7 +36,8 @@
 	margin-right:auto;
 	margin-left:auto;
 	float:left;
-	width:auto;
+	width:70%;
+	border: 1px solid black;
 }
 
 .form_fields{
@@ -57,3 +58,24 @@
 	font-family:Sans-Serif;
 	font-size:70%
 }
+
+/*Registration area*/
+.registration_area{
+	border:1px solid black;
+	width:100%;
+	height: 100%;
+	display: block;
+}
+
+.reg_form_area{
+	width:20%;
+	margin: auto;
+	border:1px solid black;
+	/*position:relative;*/
+}
+
+.reg_form_area form input,label{
+	float:left;
+	width:100%
+}
+

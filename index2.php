@@ -7,33 +7,25 @@
 		<?php
 		#Getting the mysql connection from mysql_connection.php file
         include 'functions.php';	 	
-		#Logic for login. First check if form fields are set, then check if empty
-	 	if(isset($_POST["username"])&&isset($_POST["password"])){
-	 			$username=$_POST["username"];
-	 			$password=$_POST["password"];
+		
+		
+		
+		
+		if(isset($_POST['username'])&&isset($_POST['password'])){
+			$username=$_POST['username'];
+			$password=$_POST['password'];
+			if(!empty($username)&&!empty($password)){
+				$options = array(
+					'cost' => 20,
+				  );
+				ECHO $password_hash = password_hash($password, PASSWORD_BCRYPT, $options);
+			}
 
-	 			if(!empty($username)&&!empty($password)){ #check if credential fields are empty
-                    $conn=new DB_ops; #Initiate a new object based on the class DB_ops from functions.php
-                    $test=$conn->checkLogin($username,$password);
-                    if(mysqli_num_rows($test)>0){
-						include 'cookie.php';
-					}
-					else{
-						echo "Username and password incorrect";
-					}
-				}
-				else{
-					echo "Please enter username and password";
-				}
-	 		}
-		
-		
+
+			/*$obj=new DB_ops;
+			$obj->checkLogin($username,$password)	;*/
+		}
 		?>
-		<div class="main_container">
-			<div class="menu-area">
-				<div><a href="insert.php">Insert Patient</a></div>
-				<div><a href="patients.php">Patients list</a></div>	
-			</div>
 			
 			<div class="login_area">
 				<form method="post" action="">

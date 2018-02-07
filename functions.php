@@ -13,10 +13,61 @@ class DB_ops{
 		}
 	}
 
-	public function checkLogin($username,$password){
-		$sql_login="SELECT username,password FROM credentials WHERE username='$username' AND password='$password'";
-		$result=mysqli_query($this->dbc,$sql_login);
-		return ($result);
+	public function checkLogin($username,$password){//function complete
+		$sql_login=$this->dbc->prepare("SELECT username, password FROM credentials WHERE username=?"); #Prepare a mysql statement stored in $sql_query. Returns a handle for further processing with the same process.
+		$sql_login->bind_param("s",$username); #Binding parameters to the prepare SQL statement in $sql_login;
+		$sql_login->execute(); #Execute the sql statement in $sql_login. Returns boolean: TRUE on success or FALSE on failure.
+		$result = $sql_login->get_result();
+		$row = $result->fetch_assoc();
+		$hashed_password=$row['password'];
+		if(password_verify($password,$hashed_password)==TRUE){
+			return TRUE;
+		}else{
+			return FALSE;
+		}
+	}
+	public function insertNewUser($fname,$surname,$contact_number,$id_card_number,$email,$str_address,$locality,$postcode,$dob,$password_hash){
+		$stmt1=$this->dbc->prepare("INSERT INTO users(first_name, surname, contact_number, id_card_number, email, street_address, locality, post_code, dob) VALUES (?,?,?,?,?,?,?,?,?)");
+		$stmt1->bind_Param('ssdssssss', $fname, $surname,$contact_number,$id_card_number,$email,$str_address,$locality,$postcode,$dob);
+		$stmt1->execute();
+		$stmt1_id=mysqli_insert_id($this->dbc);
+
+		//$password_hash = password_hash($password, PASSWORD_BCRYPT);
+		$stmt2=$this->dbc->prepare("INSERT INTO credentials (username, password)VALUES(?,?)");
+		$stmt2->bind_param("ss",$email,$password_hash);
+		$stmt2->execute();
+		$stmt2_id=mysqli_insert_id($this->dbc)."<br />";
+
+		$stmt3=$this->dbc->prepare("INSERT INTO user_cred(user_id, cred_id) VALUES(?,?)");
+		$stmt3->bind_param("ii",$stmt1_id,$stmt2_id);
+		$stmt3->execute();
+	}
+
+	public function getRole($userid){
+		$sql2="SELECT users.id, users.first_name,users.surname, credentials.username, credentials.password
+		FROM users
+		JOIN user_cred
+		ON users.id = user_cred.user_id
+		JOIN credentials
+		ON user_cred.cred_id = credentials.id
+		WHERE users.id=1";
+	}
+
+}
+
+class userId extends DB_ops{
+
+	public function getUserId(){
+		$userID=array();
+		$sql="SELECT id, first_name, surname, role_name from users JOIN user_role on users.id = user_role.user_id JOIN roles on user_role.role_id = roles.role_id WHERE users.id=1";
+		if((mysqli_query($this->dbc,$sql))==TRUE){
+			echo "select completed";
+		}
+		else{
+			echo "select not completed";
+		}
+		#$exec=$this->sql->prepare();
+		#$this->sql->prepare($sql);
 	}
 }
 
