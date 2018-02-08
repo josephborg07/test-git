@@ -11,19 +11,16 @@
 	 	if(isset($_POST["username"])&&isset($_POST["password"])){
 	 			$username=$_POST["username"];
 	 			$password=$_POST["password"];
-
 	 			if(!empty($username)&&!empty($password)){ #check if credential fields are empty
-
 					$conn=new DB_ops; #Initiate a new object based on the class DB_ops from functions.php
                     $test=$conn->checkLogin($username,$password);
-					if($test==TRUE){	
-						include 'cookie.php';
+					if(isset($_SESSION['username'])){	
+						$session_user=$_SESSION['username'];
+						echo $session_user;
 					}
 					else{
-						echo "Username of password incorred";
+						echo "Username of password incorret";
 					}
-                    
-					
 				}
 		}
 		else{
@@ -33,7 +30,7 @@
 
 		<div class="main_container">
 			<div class="menu-area">
-				<div><a href="insert.php">Insert Patient</a></div>
+				<div><a href="insert_patient.php">Insert Patient</a></div>
 				<div><a href="patients.php">Patients list</a></div>	
 				<div><a href="InsertUSer.php">Insert User</a></div>
 			</div>

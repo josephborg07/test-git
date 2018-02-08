@@ -6,7 +6,7 @@ class DB_ops{
 	public $db_name="test";
 
 	public function __construct(){
-		$conn=mysqli_connect($this->db_server,$this->db_user,$this->db_pass,$this->db_name);
+		$conn=new mysqli($this->db_server,$this->db_user,$this->db_pass,$this->db_name);
 		$this->dbc=$conn;
 		if(mysqli_connect_errno()){
 			echo"mysql connection failed ".mysqli_connect_error();
@@ -21,7 +21,7 @@ class DB_ops{
 		$row = $result->fetch_assoc();
 		$hashed_password=$row['password'];
 		if(password_verify($password,$hashed_password)==TRUE){
-			return TRUE;
+			return $_SESSION['username']=$username;
 		}else{
 			return FALSE;
 		}
@@ -73,8 +73,21 @@ class userId extends DB_ops{
 
 class sexualOrientation extends DB_ops{
 
-	function test(){
-		return $this->dbc;
+	public function getSexualOrientation(){
+		$sql="SELECT * FROM sexual_orientation";
+		$test_query=$this->dbc->query($sql);
+		
+		if($test_query == TRUE){
+			echo "SQL was true<br />";
+		}
+		else{
+			echo "SQL Failed.<br />";
+		}
+		
+		/*$assoc=$resultSelect->fetch_assoc();
+		foreach($assoc as $a){
+			echo $a."<br />";
+		}*/
 	}
 
 }
@@ -118,11 +131,28 @@ function insert_new_patient(){
 						}
 					}
 				else{
-					echo "fields were empty";
+					echo "Kindly input all fields";
 				}
 			}
 			else{
-				echo "variables not set";
+				//do nothing
 			}
 }
+/*class ListConsultants extends DB_ops{
+	$query=$obj->dbc->query("SELECT id, first_name,surname,email from users");
+		//$result = $query->get_result();
+		$row = $query->fetch_all(MYSQLI_ASSOC);
+		$row_count=sizeof($row);
+		$a=0;
+		while($a<=$row_count){
+			//echo $i['id']." ".$i['first_name']." ".$i['surname']." ".$i['email']."<br />";
+			foreach($row as $i){
+			${"id".$a}=$i['id'];
+			${"first_name".$a}=$i['first_name'];
+			${"surname".$a}=$i['surname'];
+			${"email".$a}=$i['email'];
+			$a++;
+			}
+		}
+}*/
 ?>

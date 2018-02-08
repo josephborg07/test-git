@@ -14,17 +14,10 @@
 		if(isset($_POST['username'])&&isset($_POST['password'])){
 			$username=$_POST['username'];
 			$password=$_POST['password'];
-			if(!empty($username)&&!empty($password)){
-				$options = array(
-					'cost' => 20,
-				  );
-				ECHO $password_hash = password_hash($password, PASSWORD_BCRYPT, $options);
-			}
-
-
-			/*$obj=new DB_ops;
-			$obj->checkLogin($username,$password)	;*/
-		}
+			}	
+			/*$SexOr=new SexualOrientation();
+			$SexOr->getSexualOrientation();*/
+		
 		?>
 			
 			<div class="login_area">
