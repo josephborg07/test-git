@@ -57,11 +57,11 @@
 					
 					<label>Sexual Orientation</label>
 					<select name="sexual_orientation">
-						<option value="<?php echo "$sex_ori_id0"?>"><?php echo $sex_ori_name0 ?></option>
 						<option value="<?php echo "$sex_ori_id1"?>"><?php echo $sex_ori_name1 ?></option>
 						<option value="<?php echo "$sex_ori_id2"?>"><?php echo $sex_ori_name2 ?></option>
 						<option value="<?php echo "$sex_ori_id3"?>"><?php echo $sex_ori_name3 ?></option>
 						<option value="<?php echo "$sex_ori_id4"?>"><?php echo $sex_ori_name4 ?></option>
+						<option value="<?php echo "$sex_ori_id5"?>"><?php echo $sex_ori_name5 ?></option>
 					</select><br />
 					<label>Consultant</label>
 					<select name="consultant">
@@ -71,7 +71,7 @@
 						$query=$obj->dbc->query("SELECT id, first_name,surname,email from users");
 						$row = $query->fetch_all(MYSQLI_ASSOC);
 						$row_count=sizeof($row);
-						$a=0;
+						$a=1;
 							foreach($row as $i){
 								echo"<option value=".$i['id'].">".$i['first_name']." ".$i['surname']."</option>";
 							$a++;
@@ -84,7 +84,9 @@
 		</div>
 		<?php
 
-			insert_new_patient();
+			$obj=new InsertOps;
+			$obj->insert_new_patient();
+
 		?>
 	</body>
 	</html>

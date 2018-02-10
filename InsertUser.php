@@ -23,7 +23,7 @@ if(isset($_POST['fname'])&&isset($_POST['surname'])&&isset($_POST['contact_numbe
     {
             include 'functions.php';
             $password_hash=password_hash($password,PASSWORD_BCRYPT);
-            $obj=new DB_ops;
+            $obj=new InsertOps;
             $obj->insertNewUser($fname,$surname,$contact_number,$id_card_number,$email,$str_address,$locality,$postcode,$dob,$password_hash);
             
     }

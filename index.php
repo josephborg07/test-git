@@ -13,14 +13,21 @@
 	 			$password=$_POST["password"];
 	 			if(!empty($username)&&!empty($password)){ #check if credential fields are empty
 					$conn=new DB_ops; #Initiate a new object based on the class DB_ops from functions.php
-                    $test=$conn->checkLogin($username,$password);
-					if(isset($_SESSION['username'])){	
-						$session_user=$_SESSION['username'];
-						echo $session_user;
+					$check_login=$conn->checkLogin($username,$password);
+					if($check_login>0){
+						$user_id=$check_login;
+						$check_user_perm=$conn->checkUserPerm($user_id);
+						echo $check_user_perm['role_name'];
+						/*session_start();
+						$_SESSION['user_id'] = $check_login['id'];
+						$_SESSION['first_name'] = $check_login['first_name'];
+						$_SESSION['surname']= $check_login['surname'];
+						$_SESSION['role_name'] = $check_login['role_name'];*/
 					}
 					else{
-						echo "Username of password incorret";
+						echo "Incorrect username or password";
 					}
+					
 				}
 		}
 		else{

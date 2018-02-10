@@ -1,3 +1,7 @@
 <?php
-echo "You are logged in and cookie is set";
+
+session_start();
+if(isset($_SESSION['role_name'])){
+    echo"user id is set to ".$_SESSION['role_name'];
+}
 ?>
