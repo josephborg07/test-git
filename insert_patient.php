@@ -5,7 +5,7 @@
 	<body>
 		<?php
 		include 'functions.php';
-		$variables=get_sexual_orientation();;
+		$variables=get_sexual_orientation();
 		extract($variables);
 		$obj= new DB_ops;
 		$query=$obj->dbc->query("SELECT id, first_name,surname,email from users");
@@ -23,7 +23,6 @@
 			$a++;
 			}
 		}
-		//var_dump($row);
 		?>
 		<div class="registration_area">
     		<div class="reg_form_area">
@@ -83,10 +82,12 @@
 			</div>
 		</div>
 		<?php
-
+			session_start();
+			$footer=new userOps;
+			$footer->footer($_SESSION['user_id'],$_SESSION['first_name'],$_SESSION['surname'],$_SESSION['role_name'],$_SESSION['logged_in']);
 			$obj=new InsertOps;
 			$obj->insert_new_patient();
-
+			
 		?>
 	</body>
 	</html>

@@ -1,4 +1,17 @@
 <?php
+
+class page_fundementals{
+
+	public function __construct(){
+		echo '<div class="menu-area">
+                <div><a href="insert_patient.php">Insert Patient</a></div>
+                <div><a href="list_patients.php">Patients list</a></div>	
+                <div><a href="InsertUSer.php">Insert User</a></div>
+                <div><a href="logout.php">LogOut</a></div>
+            </div>';   
+	}
+}
+
 class DB_ops{
 	public $db_server="localhost";
 	public $db_user="root";
@@ -37,19 +50,7 @@ class DB_ops{
 			$login_perm_row=$login_perm_result->fetch_assoc();
 			return $login_perm_row;
 	}
-	
-
-	public function getRole($userid){
-		$sql2="SELECT users.id, users.first_name,users.surname, credentials.username, credentials.password
-		FROM users
-		JOIN user_cred
-		ON users.id = user_cred.user_id
-		JOIN credentials
-		ON user_cred.cred_id = credentials.id
-		WHERE users.id=1";
-	}
-
-}
+} #Ends DB_ops class
 
 class InsertOps extends DB_ops{
 	public function insertNewUser($fname,$surname,$contact_number,$id_card_number,$email,$str_address,$locality,$postcode,$dob,$password_hash){
@@ -70,30 +71,30 @@ class InsertOps extends DB_ops{
 	}
 	public function insert_new_patient(){
 		if(isset($_POST['id_card_number'])&&isset($_POST['first_name'])&&isset($_POST['surname'])&&isset($_POST['email'])&&isset($_POST['mobile_number'])&&isset($_POST['landline_phone'])&&isset($_POST['dob'])&&isset($_POST['maritial_status'])&&isset($_POST['sexual_orientation'])&&isset($_POST['consultant'])){
-					$id_card_number=$_POST['id_card_number'];
-					$first_name=$_POST['first_name'];
-					$surname=$_POST['surname'];
-					$email=$_POST['email'];
-					$mobile_number=$_POST['mobile_number'];
-					$landline_phone=$_POST['landline_phone'];
-					$dob=$_POST['dob'];
-					$occupation=$_POST['occupation'];
-					$maritial_status=$_POST['maritial_status'];
-					$sexual_orientation=$_POST['sexual_orientation'];
-					$consultant=$_POST['consultant'];
-					
-					if(!empty($first_name)&&!empty($surname)&&!empty($email)&&!empty($mobile_number)&&!empty($landline_phone)&&!empty($dob)&&!empty($occupation)&&!empty($maritial_status)&&!empty($sexual_orientation)&&!empty($id_card_number)&&!empty($consultant)){
-						$sql=$this->dbc->prepare("INSERT INTO patients(first_name,surname,email,mobile_number,landline_phone,dob,occupation,sexual_orientation,maritial_status,id_card_number,consultant_id)VALUES(?,?,?,?,?,?,?,?,?,?,?)");
-						$sql->bind_param("sssddssdssd",$first_name,$surname,$email,$mobile_number,$landline_phone,$dob,$occupation,$sexual_orientation,$maritial_status,$id_card_number,$consultant);
-						
-						if ($sql->execute() === TRUE) {
-							echo "New record created successfully";
-						} else {
-							echo "Error: " .  "<br>" . $this->dbc->error;
-						}
-					}else{
-						echo "Kindly input all fields";
-					}
+			$id_card_number=$_POST['id_card_number'];
+			$first_name=$_POST['first_name'];
+			$surname=$_POST['surname'];
+			$email=$_POST['email'];
+			$mobile_number=$_POST['mobile_number'];
+			$landline_phone=$_POST['landline_phone'];
+			$dob=$_POST['dob'];
+			$occupation=$_POST['occupation'];
+			$maritial_status=$_POST['maritial_status'];
+			$sexual_orientation=$_POST['sexual_orientation'];
+			$consultant=$_POST['consultant'];
+			
+			if(!empty($first_name)&&!empty($surname)&&!empty($email)&&!empty($mobile_number)&&!empty($landline_phone)&&!empty($dob)&&!empty($occupation)&&!empty($maritial_status)&&!empty($sexual_orientation)&&!empty($id_card_number)&&!empty($consultant)){
+				$stmt1=$this->dbc->prepare("INSERT INTO patients(first_name,surname,email,mobile_number,landline_phone,dob,occupation,sexual_orientation,maritial_status,id_card_number,consultant_id)VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+				$stmt1->bind_param("sssddssdssd",$first_name,$surname,$email,$mobile_number,$landline_phone,$dob,$occupation,$sexual_orientation,$maritial_status,$id_card_number,$consultant);
+				$stmt1->execute();
+				$stmt1_id=mysqli_insert_id($this->dbc);
+				
+				$stmt2=$this->dbc->prepare("INSERT INTO user_patient(user_id,patient_id) VALUES(?,?)");
+				$stmt2->bind_param("dd",$consultant,$stmt1_id);
+				$stmt2->execute();
+			}else{
+				echo "Kindly input all fields";
+			}
 		}
 		else{
 			//do nothing
@@ -101,34 +102,42 @@ class InsertOps extends DB_ops{
 	}
 }
 
-class userId extends DB_ops{
-
-	public function getUserId(){
-		$userID=array();
-		$sql="SELECT id, first_name, surname, role_name from users JOIN user_role on users.id = user_role.user_id JOIN roles on user_role.role_id = roles.role_id WHERE users.id=1";
-		if((mysqli_query($this->dbc,$sql))==TRUE){
-			echo "select completed";
-		}
-		else{
-			echo "select not completed";
-		}
+class userOps{
+	public function footer($user_id,$user_name,$user_surname,$user_role,$logged_in){
+		if($_SESSION['logged_in']==='TRUE'){
+            echo'<div class="footer">
+                <div>'.$user_name.' '.$user_surname.'</div>
+                <div>'.$user_role.'</div>';
+        }
 	}
 }
 
-class sexualOrientation extends DB_ops{
-
-	public function getSexualOrientation(){
-		$sql="SELECT * FROM sexual_orientation";
-		$test_query=$this->dbc->query($sql);
+class consultant_ops extends DB_ops{
+	public function listPatients($user_id){
+		$stmt1=$this->dbc->prepare("SELECT patients.id as p_id, patients.first_name as p_fname, patients.surname as p_surname FROM users JOIN user_patient on users.id = user_patient.user_id JOIN patients on user_patient.patient_id = patients.id WHERE users.id=?");
+		$stmt1->bind_param('i',$user_id);
+		$stmt1->execute();
+		$result=$stmt1->get_result();
+		$resultset=$result->fetch_all(MYSQLI_ASSOC);
 		
-		if($test_query == TRUE){
-			echo "SQL was true<br />";
+		foreach($resultset as $row){
+			$i=0;
+			$vars['p_fname'.$i]=$row['p_fname'];
+			$vars['p_surname'.$i]=$row['p_surname'];
+			$i++;
 		}
-		else{
-			echo "SQL Failed.<br />";
-		}
+		return $resultset;
 	}
 
+	public function get_patient_details($p_id){
+		$sql="SELECT * FROM patients where patients.id=?";
+		$stmt1=$this->dbc->prepare($sql);
+		$stmt1->bind_param('d',$p_id);
+		$stmt1->execute();
+		$result=$stmt1->get_result();
+		$row=$result->fetch_assoc();
+		return $row;
+	}
 }
 
 function get_sexual_orientation(){
@@ -147,22 +156,4 @@ function get_sexual_orientation(){
 		return $variables;
 }
 
-
-/*class ListConsultants extends DB_ops{
-	$query=$obj->dbc->query("SELECT id, first_name,surname,email from users");
-		//$result = $query->get_result();
-		$row = $query->fetch_all(MYSQLI_ASSOC);
-		$row_count=sizeof($row);
-		$a=0;
-		while($a<=$row_count){
-			//echo $i['id']." ".$i['first_name']." ".$i['surname']." ".$i['email']."<br />";
-			foreach($row as $i){
-			${"id".$a}=$i['id'];
-			${"first_name".$a}=$i['first_name'];
-			${"surname".$a}=$i['surname'];
-			${"email".$a}=$i['email'];
-			$a++;
-			}
-		}
-}*/
 ?>

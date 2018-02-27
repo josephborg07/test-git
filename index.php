@@ -17,31 +17,27 @@
 					if($check_login>0){
 						$user_id=$check_login;
 						$check_user_perm=$conn->checkUserPerm($user_id);
-						echo $check_user_perm['role_name'];
-						/*session_start();
-						$_SESSION['user_id'] = $check_login['id'];
-						$_SESSION['first_name'] = $check_login['first_name'];
-						$_SESSION['surname']= $check_login['surname'];
-						$_SESSION['role_name'] = $check_login['role_name'];*/
+						
+						session_start();
+						session_id();
+						$_SESSION['user_id']=$check_user_perm['id'];
+						$_SESSION['first_name']=$check_user_perm['first_name'];
+						$_SESSION['surname']=$check_user_perm['surname'];
+						$_SESSION['role_name']=$check_user_perm['role_name'];
+						$_SESSION['logged_in']='TRUE';
+						
+						header('Location: loggedin.php');
 					}
 					else{
 						echo "Incorrect username or password";
 					}
-					
 				}
-		}
-		else{
-			echo "Please enter username and password";
-		}		
+				}else{
+					echo "Please enter username and password";
+				}		
 		?>
 
-		<div class="main_container">
-			<div class="menu-area">
-				<div><a href="insert_patient.php">Insert Patient</a></div>
-				<div><a href="patients.php">Patients list</a></div>	
-				<div><a href="InsertUSer.php">Insert User</a></div>
-			</div>
-			
+		<div class="main_container">			
 			<div class="login_area">
 				<form method="post" action="">
 					<div class="form_fields">
@@ -53,5 +49,6 @@
 				
 			</div>
 		</div>
+		
 	</body>
 </html>

@@ -15,8 +15,7 @@
 			$username=$_POST['username'];
 			$password=$_POST['password'];
 			}	
-			/*$SexOr=new SexualOrientation();
-			$SexOr->getSexualOrientation();*/
+				
 		
 		?>
 			
